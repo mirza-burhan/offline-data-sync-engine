@@ -82,7 +82,21 @@ def mark_as_synced(note_id):
 
     connection.commit()
     connection.close()
+def create_note(title, content):
+    connection = get_connection()
+    cursor = connection.cursor()
 
+    timestamp = time.time()
+
+    cursor.execute("""
+        INSERT INTO notes (title, content, updated_at, synced)
+        VALUES (?, ?, ?, 0)
+    """, (title, content, timestamp))
+
+    connection.commit()
+    connection.close()
+
+    print("Note saved locally.")
 if __name__ == "__main__":
     initialize_database()
 

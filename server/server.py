@@ -15,12 +15,13 @@ def home():
 def create_note():
     note = request.get_json()
 
-    save_note(note)
+    result = save_note(note)
 
-    print("Received and saved note:", note)
+    print(f"Received note {note['id']}: {result}")
 
     return jsonify({
-        "message": "Note saved successfully",
+        "message": "Note processed successfully",
+        "result": result,
         "note": note
     }), 201
 

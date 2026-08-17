@@ -1,5 +1,8 @@
 from flask import Flask, request, jsonify
 
+from server_database import initialize_database, save_note
+
+
 app = Flask(__name__)
 
 
@@ -12,12 +15,17 @@ def home():
 def create_note():
     note = request.get_json()
 
-    print("Received note:", note)
+    save_note(note)
+
+    print("Received and saved note:", note)
 
     return jsonify({
-        "message": "Note received successfully",
+        "message": "Note saved successfully",
         "note": note
     }), 201
+
+
+initialize_database()
 
 
 if __name__ == "__main__":

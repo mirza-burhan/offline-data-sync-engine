@@ -82,6 +82,7 @@ def mark_as_synced(note_id):
 
     connection.commit()
     connection.close()
+
 if __name__ == "__main__":
     initialize_database()
 

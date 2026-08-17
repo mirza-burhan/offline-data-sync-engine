@@ -55,10 +55,39 @@ def get_notes():
     connection.close()
 
     return notes
+def get_unsynced_notes():
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT id, title, content, updated_at, synced
+        FROM notes
+        WHERE synced = 0
+    """)
+
+    notes = cursor.fetchall()
+
+    connection.close()
+
+    return notes
+def mark_as_synced(note_id):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        UPDATE notes
+        SET synced = 1
+        WHERE id = ?
+    """, (note_id,))
+
+    connection.commit()
+    connection.close()
 if __name__ == "__main__":
     initialize_database()
 
-    notes = get_notes()
+    notes = get_unsynced_notes()
+
+    print("Unsynced notes:")
 
     for note in notes:
         print(note)
